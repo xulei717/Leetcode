@@ -6,7 +6,7 @@
 
 ## Done
 
-### simple
+### simple - 12
 
 |title|label|time|
 |-|-|-
@@ -24,7 +24,7 @@
 |122.买卖股票的最佳时机II|动态规划|2019.12.26
 
 
-### medium
+### medium - 8
 
 |title|label|time
 |-|-|-
@@ -38,7 +38,7 @@
 |901.股票价格跨度|栈、股票|2019.12.26
 
 
-### hard
+### hard - 2
 |title|label|time
 |-|-|-
 |123.买卖股票的最佳时机III|动态规划、股票|2019.12.26
