@@ -4,9 +4,9 @@
 
 [https://leetcode-cn.com/problemset/all/](https://leetcode-cn.com/problemset/all/) 
 
-## Done
+## Done - 27
 
-### simple - 12
+### simple - 17
 
 |title|label|time|
 |-|-|-
