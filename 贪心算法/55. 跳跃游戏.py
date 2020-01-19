@@ -40,3 +40,20 @@ class Solution1:
 # 执行用时 :36 ms, 在所有 Python3 提交中击败了100.00% 的用户
 # 内存消耗 :14.6 MB, 在所有 Python3 提交中击败了99.56%的用户
 
+
+# 从0位置开始，看每一步可以达到的最远的位置，看最终包括了最后一个位置就为True，否则为False
+class Solution2:
+    def canJump(self, nums: list[int]) -> bool:
+        last = len(nums) - 1
+        mm, i = 0, 0
+        while i <= mm:
+            mm = max(mm, i+nums[i])
+            if mm >= last:
+                return True
+            i += 1
+
+        return False
+
+# 执行结果：通过
+# 执行用时 :48 ms, 在所有 Python3 提交中击败了98.93% 的用户
+# 内存消耗 :14.5 MB, 在所有 Python3 提交中击败了100%的用户
