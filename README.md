@@ -7,7 +7,7 @@
 ## Done - 37
 |simple|medium|hard|all
 |-|-|-|-
-|17|16|4|3
+|17|16|4|37
 
 ### simple - 17
 
