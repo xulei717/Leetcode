@@ -28,7 +28,104 @@ Buildings Skyline Contour
 来源：力扣（LeetCode）
 链接：https://leetcode-cn.com/problems/the-skyline-problem
 """
+import heapq
+
+
+class Solution1:
+    def getSkyline(self, buildings):
+        if not buildings: return []
+        points = []  # 记录每个建筑物的左上角和右下角坐标
+        heap = [[0, float('inf')]]  # 最大堆,确保顶点是目前扫描过的所有建筑的最大高度
+        res = [[0, 0]]  # 记录结果
+
+        #1.每个建筑物的左上角和右下角坐标和高度记录下来
+        for l, r, h in buildings:
+            points.append((l, -h, r))  # h为负数表示是建筑物左上角，也把最小堆变成了最大堆
+            points.append((r, h, 0))  # 右下角坐标
+        #2.将所有端点从小到大排序
+        points.sort()  # 如果当前端点左下标相等，则按照高度升序
+        print('points: ', points)
+        #3.遍历每一个端点，通过判断出堆，入堆，产生关键点
+        for l, h, r in points:
+            print(l, h, r)
+            while l >= heap[0][1]:  # 出堆：保证当前堆顶为去除之前建筑物右端点的最大值。
+                heapq.heappop(heap)
+            if h < 0:  # 左端点入堆
+                heapq.heappush(heap, [h, r])  # 入堆的是建筑物的高度和右坐标
+            if res[-1][1] != -heap[0][0]:  # 产生关键点，如果已经有更高的建筑物左坐标入堆并且是关键点，则这个左右坐标就不是关键点
+                res.append([l, -heap[0][0]])  # 关键点肯定是左坐标，高度为负数，右坐标高度也是0
+            print('heap: ', heap)
+            print('res: ', res)
+        return res[1:]
+# 执行结果：通过
+# 执行用时 :152 ms, 在所有 Python3 提交中击败了71.36% 的用户
+# 内存消耗 :18.6 MB, 在所有 Python3 提交中击败了25.14%的用户
 
 
 class Solution:
-    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+    def getSkyline(self, buildings):
+        #思路：最大堆，每次在判断关键点的时候，移除所有右端点≤当前点的堆顶。
+        if not buildings:return []
+        points = []
+        heap = [[0, float('inf')]]
+        res = [[0, 0]]
+
+        #1.将所有端点加入到点集中(每个建筑物的左右端点)
+        for l, r, h in buildings:
+            points.append((l, -h, r)) #这里负号将最小堆，变成了最大堆
+            points.append((r, h, 0)) #r的右端点为0
+
+        #2.将端点从小到大排序
+        points.sort() #如果当前点相等，则按照高度升序
+        print('points: ', points)
+
+        #3.遍历每一个点，分别判断出堆、入堆、添加关键点操作。
+        for l, h, r in points:
+            print(l, h, r)
+            while l >= heap[0][1]: #出堆：保证当前堆顶为去除之前建筑物右端点的最大值。
+                heapq.heappop(heap)
+            if h < 0: #入堆：所有左端点都要入堆
+                heapq.heappush(heap, [h, r])
+            if res[-1][1] != -heap[0][0]: #关键点：必然是左端点，堆顶，因此需要加负号
+                res.append([l, -heap[0][0]])
+            print('heap: ', heap)
+            print('res: ', res)
+        return res[1:]
+
+
+s = Solution1()
+s.getSkyline([[2,9,10], [3,7,15], [5,12,12], [15,20,10], [19,24,8]])
+'''
+points:  [(2, -10, 9), (3, -15, 7), (5, -12, 12), (7, 15, 0), (9, 10, 0), (12, 12, 0), (15, -10, 20), (19, -8, 24), (20, 10, 0), (24, 8, 0)]
+2 -10 9
+heap:  [[-10, 9], [0, inf]]
+res:  [[0, 0], [2, 10]]
+3 -15 7
+heap:  [[-15, 7], [0, inf], [-10, 9]]
+res:  [[0, 0], [2, 10], [3, 15]]
+5 -12 12
+heap:  [[-15, 7], [-12, 12], [-10, 9], [0, inf]]
+res:  [[0, 0], [2, 10], [3, 15]]
+7 15 0
+heap:  [[-12, 12], [0, inf], [-10, 9]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12]]
+9 10 0
+heap:  [[-12, 12], [0, inf], [-10, 9]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12]]
+12 12 0
+heap:  [[0, inf]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12], [12, 0]]
+15 -10 20
+heap:  [[-10, 20], [0, inf]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12], [12, 0], [15, 10]]
+19 -8 24
+heap:  [[-10, 20], [0, inf], [-8, 24]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12], [12, 0], [15, 10]]
+20 10 0
+heap:  [[-8, 24], [0, inf]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12], [12, 0], [15, 10], [20, 8]]
+24 8 0
+heap:  [[0, inf]]
+res:  [[0, 0], [2, 10], [3, 15], [7, 12], [12, 0], [15, 10], [20, 8], [24, 0]]
+
+'''
