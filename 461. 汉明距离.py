@@ -2,87 +2,82 @@
 # coding: utf-8
 
 # # -*- coding:utf-8 -*-
-# # @time   : 2020-2-10 15:27
+# # @time   : 2020-7-14 09:48
 # # @author : xulei
 # # @project: leetcode
 
-# """
-# 标签：简单、哈希表、数组、华为
-# 题目：
-# 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
-# 
-# 你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
-# 
-# 示例:
-# 
-# 给定 nums = [2, 7, 11, 15], target = 9
-# 
-# 因为 nums[0] + nums[1] = 2 + 7 = 9
-# 所以返回 [0, 1]
-# 
-# 来源：力扣（LeetCode）
-# 链接：https://leetcode-cn.com/problems/two-sum
-# """
+"""
+标签：简单、位运算
+题目：
+两个整数之间的汉明距离指的是这两个数字对应二进制位不同的位置的数目。
 
-# In[ ]:
+给出两个整数 x 和 y，计算它们之间的汉明距离。
 
+注意：
+0 ≤ x, y < 231.
 
+示例:
 
-# In[13]:
+输入: x = 1, y = 4
 
+输出: 2
 
-class Solution:
-    def twoSum(self, nums, target):
-        nsl = sorted(nums)
-        for i in range(len(nsl)):
-            t = target - nsl[i]
-            if t in nsl[i+1:]:
-                index1 = nums.index(nsl[i])
-                index2 = nums.index(t)
-                if index1 == index2:
-                    index2 = nums[index1+1:].index(t) + index1 + 1
-                return [index1, index2]
-        
+解释:
+1   (0 0 0 1)
+4   (0 1 0 0)
+       ↑   ↑
+
+上面的箭头指出了对应二进制位不同的位置。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/hamming-distance
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+"""
+
+class Solution1:
+    def intStr(self, n):
+        if n==0:
+            return ""
+        else:
+            return self.intStr(n//2)+str(n%2)
+
+    def hammingDistance(self, x: int, y: int) -> int:
+        z = x ^ y
+        zs = self.intStr(z)
+        num = zs.count("1")
+        # print(zs)
+        # print(num)
+        return num
 
 
 # 执行结果：通过
-# 执行用时 :52 ms, 在所有 Python3 提交中击败了91.38%的用户
-# 内存消耗 :14.2 MB, 在所有 Python3 提交中击败了68.57%的用户
+# 执行用时 :48 ms, 在所有 Python3 提交中击败了19.96%的用户
+# 内存消耗 :13.7 MB, 在所有 Python3 提交中击败了6.67%的用户
 
-# In[14]:
+# 采用 python 自带了方法 bin 函数，比如 bin(12345) 回返回字符串 '0b11000000111001', 这个时候在把0b去掉即可
+class Solution2:
+    def hammingDistance(self, x: int, y: int) -> int:
+        z = x ^ y
+        zs = bin(z).replace('0b', '')
+        num = zs.count("1")
+        # print(zs)
+        # print(num)
+        return num
 
+# 执行结果：通过
+# 执行用时 :36 ms, 在所有 Python3 提交中击败了88.06%的用户
+# 内存消耗 :13.5 MB, 在所有 Python3 提交中击败了6.67%的用户
 
-nums = [2, 7, 11, 15]
-target = 9
-s = Solution()
-result = s.twoSum(nums, target)
-print(result)
+# 采用字符串的 format 方法来获取二进制
+class Solution3:
+    def hammingDistance(self, x: int, y: int) -> int:
+        z = x ^ y
+        zs = '{0:b}'.format(z)
+        num = zs.count("1")
+        # print(zs)
+        # print(num)
+        return num
 
-
-# In[1]:
-
-
-a = [1,2,3]
-if 3 in a[3:]:
-    print('true')
-else:
-    print('false')
-
-
-# In[2]:
-
-
-a[1:].index(2)
-
-
-# In[3]:
-
-
-a.index(2)
-
-
-# In[ ]:
-
-
-
-
+# 执行结果：通过
+# 执行用时 :40 ms, 在所有 Python3 提交中击败了70.14%的用户
+# 内存消耗 :13.5 MB, 在所有 Python3 提交中击败了6.67%的用户
